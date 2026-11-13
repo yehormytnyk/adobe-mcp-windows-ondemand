@@ -1,0 +1,6 @@
+node_modules/
+*.exe
+*.log
+settings.json
+mcp_config.json
+node-path.txt

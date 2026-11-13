@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "premiere_pro": {
+      "serverUrl": "http://127.0.0.1:17778/mcp",
+      "headers": {
+        "Authorization": "Bearer YOUR_GENERATED_TOKEN_HERE"
+      }
+    },
+    "lightroom_classic": {
+      "serverUrl": "http://127.0.0.1:17779/mcp",
+      "headers": {
+        "Authorization": "Bearer YOUR_GENERATED_TOKEN_HERE"
+      }
+    }
+  }
+}

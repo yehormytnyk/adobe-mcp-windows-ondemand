@@ -1,0 +1,11 @@
+{
+  "name": "adobe-mcp-windows-ondemand",
+  "private": true,
+  "engines": { "node": ">=24" },
+  "dependencies": {
+    "@modelcontextprotocol/node": "2.1.2",
+    "@modelcontextprotocol/server": "2.4.0",
+    "@mskalski/lightroom-mcp": "0.27.0",
+    "premiere-pro-mcp": "1.30.0"
+  }
+}
