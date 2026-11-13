@@ -1,5 +1,7 @@
 # Adobe MCP on demand for Windows
 
+[![Adobe MCP servers run only when Adobe is open](https://img.shields.io/badge/%F0%9F%8C%B1_Adobe_MCP-Runs_only_when_Adobe_is_open-2e7d32)](#how-it-works)
+
 Run local Model Context Protocol (MCP) servers for Adobe Premiere Pro, After Effects and Lightroom Classic when you open those apps. Antigravity, Codex, Cursor and other Streamable HTTP clients can share the same two endpoints without launching their own copy of either Adobe server.
 
 ## Quick Start
