@@ -2,6 +2,18 @@
 
 Run local Model Context Protocol (MCP) servers for Adobe Premiere Pro, After Effects and Lightroom Classic when you open those apps. Antigravity, Codex, Cursor and other Streamable HTTP clients can share the same two endpoints without launching their own copy of either Adobe server.
 
+## Quick Start
+
+1. Clone the repository and enter its directory.
+
+   ```powershell
+   git clone https://github.com/yehormytnyk/adobe-mcp-windows-ondemand.git
+   cd adobe-mcp-windows-ondemand
+   ```
+
+2. Close Premiere Pro, After Effects and Lightroom Classic, then run `.\install.ps1` in PowerShell. See [Install](#install) for prerequisites and [Finish setup inside Adobe](#finish-setup-inside-adobe) for the in-app connectors.
+3. Merge the printed JSON entries and generated tokens into Antigravity's MCP configuration. In Cursor, rename `serverUrl` to `url`. In Codex, put the same URLs and tokens in `config.toml` using the [client examples](#configure-the-mcp-clients).
+
 This independent Windows integration builds on [Premiere Pro MCP](https://github.com/leancoderkavy/premiere-pro-mcp) 1.30.0 and [Lightroom MCP](https://github.com/Automaat/lightroom-mcp) 0.27.0, distributed as [`@mskalski/lightroom-mcp`](https://www.npmjs.com/package/@mskalski/lightroom-mcp). It requires a local Adobe installation and the corresponding in-app connectors.
 
 ## How it works
@@ -76,6 +88,31 @@ Use Task Scheduler to inspect `\AdobeMCP-Premiere-AppWatcher` and confirm its ac
 | `%LOCALAPPDATA%\AdobeMcp-Premiere` | Private `settings.json`, launcher output and error logs, `cep` and `after-effects` exchange folders |
 | `%APPDATA%\Adobe\CEP\extensions` | Per-user CEP panels when installed to the user scope |
 | `%APPDATA%\Adobe\Lightroom\Modules\LightroomMCP.lrplugin` | Lightroom Classic plug-in with the installed Lua hook |
+
+## Repository structure
+
+```text
+.
+|-- .gitignore                  Keeps generated binaries, logs and private configs out of Git
+|-- LICENSE                     MIT license for this integration
+|-- README.md                   Installation, client configuration and recovery
+|-- install.ps1                 Installs packages, builds launchers and registers the watcher
+|-- package.json                Declares pinned Node.js dependencies
+|-- package-lock.json           Locks the dependency tree for npm ci
+|-- premiere-shared.mjs         Runs the shared Premiere Pro and After Effects HTTP server
+|-- lightroom-hosted.mjs        Serves the Lightroom Classic bridge over HTTP
+|-- mcp_config.example.json     Client endpoint and authorization template
+|-- settings.example.json       Local HTTP and UXP token template
+|-- src/
+|   `-- AdobeMcpAppLauncher.cs   Source for the watcher and the Lightroom launcher
+|-- docs/
+|   `-- windows-adobe-mcp.md     Antigravity rules for Adobe work and Windows UI control
+`-- lightroom/
+    |-- Info.lua                Lightroom plug-in manifest
+    |-- PluginInit.lua          Installs the bridge startup hook when the plug-in loads
+    |-- PluginShutdown.lua      Closes the Lua plug-in bridge
+    `-- LICENSE.upstream        Upstream MIT notice for the Lua files
+```
 
 ## Credentials and license
 
