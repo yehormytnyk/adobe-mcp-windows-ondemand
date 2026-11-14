@@ -1,18 +1,20 @@
 ---
 trigger: always_on
-description: Порядок работы с Windows MCP, Premiere Pro, Lightroom Classic и After Effects на этом ПК.
+description: Work with Adobe MCP and Windows UI tools.
 ---
 
-# Windows и Adobe MCP
+# Windows and Adobe MCP
 
-- Применяй эти правила к задачам Windows и Adobe. Работай в приложении Adobe, которое пользователь открыл сам. Если оно закрыто, попроси открыть его и нужный проект, каталог или секвенцию.
-- Premiere и After Effects используют `premiere_pro`. Lightroom использует `lightroom_classic`. При закрытых приложениях Adobe их HTTP-серверы остановлены. После открытия дай мосту несколько секунд и при необходимости обнови подключение в Antigravity.
-- Перед правкой проверь цель инструментом чтения. Для Premiere вызови `verify_premiere_connection` и сверь проект и секвенцию. Для After Effects вызови `verify_after_effects_connection` и отдельно сверь нужную композицию. Для Lightroom проверь каталог и выделение через `get_selected_photos`.
-- Используй предметные MCP-инструменты Adobe для проекта, таймлайна, фотографий и композиций. Windows MCP используй для интерфейса, фокуса, меню и диалогов, когда нужной операции нет в Adobe MCP.
-- В Windows перед действием получай свежий `Snapshot`. После смены окна, прокрутки или открытия диалога получи новый снимок. Для клика используй `label` из текущего снимка, если он есть. Для `loc` учитывай `Screenshot Coordinate Scale` и границы выбранного монитора или региона. При масштабе 0.75 множитель обычно около 1.3333, но бери фактическое значение из ответа. `clicks: 1` выбирает или фокусирует, `clicks: 2` открывает. После клика проверяй результат.
-- Если пользователь перехватил управление, проверь `ControlStatus`. Перед ожиданием пользователя и по окончании работы с интерфейсом вызови `ControlStatus` с `release: true`.
-- Команды изменения выполняй последовательно. В Lightroom дождись завершения текущей Develop-команды перед следующей, особенно для Denoise, удаления пятен и масок. Сверяй выделение и фактические изменения после партии.
-- Обычный таймаут файлового моста Premiere и многих команд Lightroom около 30 секунд. Долгие операции Lightroom и экспорт MOGRT могут иметь внутренний лимит до 300 секунд, а таймаут клиента может быть короче. Если команда записи завершилась по таймауту, сначала проверь проект и выходной файл. Повторяй только после проверки результата.
-- В Premiere сверяй источник, секвенцию, дорожки, таймкод и частоту кадров перед изменением. Для пробных правок используй копию секвенции. В After Effects сверяй активный проект и композицию, а для MOGRT проверяй сохранённый проект, выходной файл и его импорт в Premiere.
-- Для новостных роликов по умолчанию готовь редакторскую сборку: оригинальные синхроны, точные цитаты и исходные таймкоды, структуру, варианты синхронов и заметки по B-roll и сомнительной расшифровке. Финальный монтаж, музыку, цвет, стабилизацию и титры делай по отдельной просьбе.
-- Храни ключи HTTP и UXP в `%LOCALAPPDATA%\AdobeMcp-Premiere\settings.json`. Журналы запускателей лежат в той же папке. При диагностике сообщай состояние, порт и тип ошибки, не выводя ключи.
+The frontmatter is specific to Antigravity.
+
+- Use `premiere_pro` for Premiere Pro and After Effects, and `lightroom_classic` for Lightroom Classic. Give the bridge time to start after Adobe opens, then reconnect the MCP client if needed.
+- Verify the target before editing. In Premiere use `verify_premiere_connection` and confirm the project and sequence. In After Effects use `verify_after_effects_connection` and confirm the composition. In Lightroom use `get_selected_photos` and confirm the catalog and selection.
+- Prefer Adobe MCP tools for document operations. Use Windows MCP for menus, focus and dialogs. Refresh the window snapshot after navigation or focus changes. Verify the result of each click.
+- When using the optional Windows MCP tool, take a fresh `Snapshot` before acting and after a window change, scroll or dialog opening. Prefer the `label` from the current snapshot. For `loc`, use the actual `Screenshot Coordinate Scale` from the response and account for the selected monitor or region bounds. Use `clicks: 1` to select or focus and `clicks: 2` to open an item; verify the result after each click.
+- If the user takes control, check `ControlStatus`. Before waiting for the user and when finished with Windows MCP UI work, call `ControlStatus` with `release: true`.
+- Before editing in Premiere, verify the source, sequence, tracks, timecode and frame rate. Use a copy of the sequence for trial edits.
+- In After Effects, verify the active project and composition. For MOGRT work, verify the saved project, the output file and its import into Premiere.
+- Run write commands sequentially. In Lightroom, wait for Develop operations such as Denoise and masking to finish before starting another change.
+- Many bridge commands have an internal timeout around 30 seconds. Some long Lightroom and MOGRT operations allow up to 300 seconds. A client can time out earlier. Inspect the project or output file before retrying a write.
+- Report the port and error when diagnosing a connection. Keep HTTP and UXP tokens private and out of logs, messages and screenshots.
+- Tokens are in `%LOCALAPPDATA%\AdobeMcp-Premiere\settings.json`; launcher logs are in the same folder. Report the connection state, port and error type when diagnosing, never the keys.
